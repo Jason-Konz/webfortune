@@ -8,12 +8,9 @@ import os
 app = Flask(__name__)
 app.secret_key = b'REPLACE_ME_x#pi*CO0@^z_beep_beep_boop_boop'
 
-sqlite_uri = 'sqlite:///' + os.path.abspath(os.path.curdir) + '/test.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = sqlite_uri
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+import subprocess
 
-from models import User
+
 
 @app.route('/')
 def index():
@@ -21,8 +18,12 @@ def index():
 
 @app.route('/fortune/')
 def fortune():	
-	# Execute fortune command
-	return '<pre>' + 'Fortune' + '</pre>'
+    # Execute fortune command
+    print(str(os.system("fortune")))
+    #return '<pre>' + str(os.system("fortune"))+ '</pre>'
+    process = subprocess.run(['fortune'],stdout=subprocess.PIPE,universal_newlines=True)
+    print(str(process))
+    return '<pre>' +process.stdout+ '</pre>'
 
 @app.route('/cowsay/<message>/')
 def cowsay(message):
