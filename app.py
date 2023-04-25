@@ -17,4 +17,18 @@ from models import User
 
 @app.route('/')
 def index():
-    return 'Results of GET /'
+    return redirect(url_for('fortune'))
+
+@app.route('/fortune/')
+def fortune():	
+	# Execute fortune command
+	return '<pre>' + 'Fortune' + '</pre>'
+
+@app.route('/cowsay/<message>/')
+def cowsay(message):
+	# Pass message to cowsay command
+	return 'Cowsay'
+
+@app.route('/cowfortune/')
+def cowfortune():
+	return 'cowfortune'
