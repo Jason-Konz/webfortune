@@ -2,15 +2,9 @@ from flask import (
     abort, Flask, jsonify, redirect, render_template, request,
     session, url_for
 )
-from flask_sqlalchemy import SQLAlchemy
-import os 
-
-app = Flask(__name__)
-app.secret_key = b'REPLACE_ME_x#pi*CO0@^z_beep_beep_boop_boop'
-
 import subprocess
 
-
+app = Flask(__name__)
 
 @app.route('/')
 def index():
@@ -18,15 +12,19 @@ def index():
 
 @app.route('/fortune/')
 def fortune():	
-    # Execute fortune command
-    process = subprocess.run(['fortune'],stdout=subprocess.PIPE,universal_newlines=True)
-    return '<pre>' +process.stdout+ '</pre>'
+   # Execute fortune command
+    process = subprocess.run(['fortune'],stdout=subprocess.PIPE)
+    return '<pre>' +process.stdout.decode()+ '</pre>'
 
 @app.route('/cowsay/<message>/')
 def cowsay(message):
-	# Pass message to cowsay command
-	return 'Cowsay'
+   # Pass message to cowsay command
+    process = subprocess.run(['cowsay', message],stdout=subprocess.PIPE)
+   
+    return '<pre>' + process.stdout.decode()+'</pre>'
 
 @app.route('/cowfortune/')
 def cowfortune():
-	return 'cowfortune'
+    process = subprocess.run(['fortune'],stdout=subprocess.PIPE)
+    result = subprocess.run(['cowsay', process.stdout.decode()],stdout=subprocess.PIPE)
+    return '<pre>' + result.stdout.decode()+'</pre>'
