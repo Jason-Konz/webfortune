@@ -14,14 +14,16 @@ def client(app):
 def test_index(app, client):
     #assert something
     response = client.get('/')
-    assert response.status_code == 200
-    assert 'hello world' in response.get_data(as_text=True)
+    assert response.status_code == 302
 
 def test_fortune(app, client):
     pass
 
 def test_cowsay_message(app, client):
-    pass
+    response = client.get('/cowsay/Hello DevOps/')
+    assert '(oo)' in response.get_data(as_text=True)
+    assert 'Hello DevOps' in response.get_data(as_text=True)
 
-def test_cowfotune(app, client):
-    pass
+def test_cowfortune(app, client):
+    response = client.get('/cowfortune/')
+    assert '(oo)' in response.get_data(as_text=True)
